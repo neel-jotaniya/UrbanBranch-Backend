@@ -7,7 +7,7 @@ client = MongoClient(Config.MONGODB_URI)
 db = client['UM_AI']
 
 class User:
-    collection = db['UM_AI_Users']
+    collection = db['test']
     chat_history_collection = db['chat_history_db']
 
     @staticmethod
