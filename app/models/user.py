@@ -17,10 +17,13 @@ class User:
         "personal_info": user_data,
         "questionnaire_responses": questionnaire_responses,
     }
-        doc_ref = User.collection.document()  # Create document with auto-generated ID
-        doc_ref.set(user)  # Set the document data
-            
-        return doc_ref.id
+        try:
+            doc_ref = User.collection.document()  # Create document with auto-generated ID
+            doc_ref.set(user)  # Set the document data
+            return doc_ref.id  # Return the document ID
+        except Exception as e:
+            print(f"Error creating user: {e}")
+            return None
 
     @staticmethod
     def get_user(user_id):
