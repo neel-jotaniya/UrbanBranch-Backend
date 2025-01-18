@@ -1,11 +1,33 @@
 from datetime import datetime
 from firebase_admin import firestore, credentials, initialize_app
-
+import time
+import random
+import string
 # Initialize Firebase Admin SDK with credentials JSON file
-cred = credentials.Certificate("secrate.json")  
+cred = credentials.Certificate("secret.json")  
 initialize_app(cred)
 
 db = firestore.client()
+
+
+
+
+
+
+def generate_unique_id():
+    """Generate a unique ID using current time and random string"""
+    # Get the current time in milliseconds
+    timestamp = int(time.time() * 1000)
+    
+    # Generate a random string of 6 characters (you can adjust the length)
+    random_str = ''.join(random.choices(string.ascii_letters + string.digits, k=6))
+    
+    # Combine the timestamp and the random string
+    unique_id = f"{timestamp}_{random_str}"
+    
+    return unique_id
+
+
 
 class User:
     collection = db.collection('users')  # Firestore collection for users
@@ -17,13 +39,12 @@ class User:
         "personal_info": user_data,
         "questionnaire_responses": questionnaire_responses,
     }
-        try:
-            doc_ref = User.collection.document()  # Create document with auto-generated ID
-            doc_ref.set(user)  # Set the document data
-            return doc_ref.id  # Return the document ID
-        except Exception as e:
-            print(f"Error creating user: {e}")
-            return None
+        unique_id = generate_unique_id()
+        doc_ref = User.collection.document(unique_id)  # Create document with auto-generated ID
+
+        doc_ref.set(user)  # Set the document data
+        
+        return unique_id  # Return the document ID
 
     @staticmethod
     def get_user(user_id):
