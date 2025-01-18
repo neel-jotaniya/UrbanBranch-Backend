@@ -2,7 +2,7 @@ from datetime import datetime
 from firebase_admin import firestore, credentials, initialize_app
 
 # Initialize Firebase Admin SDK with credentials JSON file
-cred = credentials.Certificate("secrate.json")  
+cred = credentials.Certificate("app/models/secrate.json")  
 initialize_app(cred)
 
 db = firestore.client()
